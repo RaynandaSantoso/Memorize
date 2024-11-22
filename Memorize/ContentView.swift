@@ -9,16 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Text("Welcome to Bitcoin Mania!")
-                .bold()
-                .font(.title)
-                .multilineTextAlignment(.leading)
-                .padding([.top, .trailing])
-                .background(.orange)
-            }
+            Text("Hello")
         }
-                
 }
     
 
