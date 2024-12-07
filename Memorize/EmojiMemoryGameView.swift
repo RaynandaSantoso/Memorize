@@ -7,10 +7,12 @@
 
 import SwiftUI
 
-struct ContentView: View {
-    let halloweenEmojis: [String] = ["👻", "₿", "🎃", "🥶", "🤖", "😱", "🤡", "💀", "😴", "😈","👻", "₿", "🎃", "🥶", "🤖", "😱", "🤡", "💀", "😴", "😈"]
-    let animalEmojis: [String] = ["😺", "🐞", "🐧", "🐷", "🐨", "🦁", "🐯", "🐻","😺", "🐞", "🐧", "🐷", "🐨", "🦁", "🐯", "🐻"]
-    let foodEmojis: [String] = ["🍓", "🍑", "🥕", "🍊","🍓", "🍑", "🥕", "🍊"]
+struct EmojiMemoryGameView: View {
+    var viewModel: EmojiMemoryGame = EmojiMemoryGame()
+    
+    let halloweenEmojis: [String] = ["👻", "₿", "🎃", "🥶", "🤖", "😱", "🤡", "💀", "😴", "😈"]
+    let animalEmojis: [String] = ["😺", "🐞", "🐧", "🐷", "🐨", "🦁", "🐯", "🐻"]
+    let foodEmojis: [String] = ["🍓", "🍑", "🥕", "🍊"]
     
     @State var selectedEmojis: [String] = []
     
@@ -28,8 +30,8 @@ struct ContentView: View {
     
     var cards: some View {
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 60))]) {
-                ForEach(0..<selectedEmojis.count, id: \.self) {index in
-                    cardView(content: selectedEmojis[index])
+                ForEach(viewModel.cards.indices, id: \.self) {index in
+                    CardView(card: viewModel.cards[index])
                         .aspectRatio(2/3, contentMode: .fit)
                 }
                 .foregroundColor(.orange)
@@ -73,17 +75,8 @@ struct ContentView: View {
 }
 
 
-
-    
-#Preview {
-    ContentView()
-}
-
-
-struct cardView: View {
-    @State var isFaceUp = false
-    
-    let content: String
+struct CardView: View {
+    var card: MemoryGame<String>.Card
     
     var body: some View {
         ZStack {
@@ -92,14 +85,22 @@ struct cardView: View {
             Group {
                 base.fill(.white)
                 base.strokeBorder(lineWidth: 2)
-                Text(content).font(.largeTitle)
+                Text(card.content).font(.largeTitle)
             }
-            .opacity(isFaceUp ? 1 : 0)
-            base.fill().opacity(isFaceUp ? 0 : 1)
+            .opacity(card.isFaceUp ? 1 : 0)
+            base.fill().opacity(card.isFaceUp ? 0 : 1)
             
-        }.onTapGesture {
-            isFaceUp.toggle()
         }
         
     }
+}
+
+struct EmojiMemoryGameView_Previews: PreviewProvider {
+    static var previews: some View {
+        EmojiMemoryGameView(viewModel: <#T##EmojiMemoryGame#>)
+    }
+}
+
+#Preview {
+    
 }
